@@ -12,7 +12,6 @@ export class LoginController implements IController {
     password,
   }: ILoginUseCase.Params): Promise<IHttpResponse> {
     try {
-      console.log(new Error("teste").message);
       if (!email || !password) {
         return {
           statusCode: 400,

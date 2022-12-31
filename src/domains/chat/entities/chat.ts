@@ -1,20 +1,20 @@
-import { Chat } from "@/domains/chat/entities";
 import { Message } from "@/domains/message";
+import { User } from "@/domains/user";
 import { BaseEntity } from "@/shared/domain/entities";
 
-export class User extends BaseEntity {
+export class Chat extends BaseEntity {
   name: string;
-  email: string;
-  password: string;
-  profilePhoto?: string;
+  description?: string;
+  image?: string;
+  members: User[];
   messages?: Message[];
-  chats?: Chat[];
+  createdBy?: User;
 
-  constructor(props: User) {
+  constructor(props: Chat) {
     super({ ...props });
     Object.assign(this, props);
+    this.members = props.members ?? [];
     this.messages = props.messages ?? [];
-    this.chats = props.chats ?? [];
     Object.freeze(this);
   }
 }

@@ -1,3 +1,3 @@
-export * from "./LoginController";
-export * from "./RegisterController";
-export * from "./LogoutController";
+export * from "./login-controller";
+export * from "./register-controller";
+export * from "./logout-controller";

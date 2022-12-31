@@ -9,7 +9,7 @@ export const adaptRoute = (controller: IController) => {
       ...(req.params || {}),
     };
     const httpResponse = await controller.handle(request);
-    console.log(httpResponse, "resposta");
+
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
       res.status(httpResponse.statusCode).json(httpResponse);
     } else {

@@ -3,6 +3,7 @@ import {
   UserAlreadyExistsException,
 } from "@/data/user/exceptions";
 import { IRegisterUseCase } from "@/domains/user/usecases";
+import { MissingParamsException } from "@/shared/domain/exceptions";
 import { IController, IHttpResponse } from "../protocols";
 
 export class RegisterController implements IController {
@@ -17,7 +18,7 @@ export class RegisterController implements IController {
       if (!name || !email || !password)
         return {
           statusCode: 400,
-          error: new Error("Tá faltando parâmetros!"),
+          error: new MissingParamsException("Missing params"),
           body: null,
         };
 

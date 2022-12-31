@@ -84,10 +84,10 @@ export class PrismaUserRepository implements IUserRepository {
   async create(data: User): Promise<(User & { id: number }) | null> {
     try {
       const { password, profilePhoto, ...restUser } = data;
-      const encryptedPassword = this.encrypter.encrypt(password);
+
       const user = await this.prismaConnection.user.create({
         data: {
-          password: encryptedPassword,
+          password,
           profilePhoto: profilePhoto ?? "",
           ...restUser,
         },

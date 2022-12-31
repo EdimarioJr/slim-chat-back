@@ -13,6 +13,27 @@ model User {
     email String @unique
     password String
     profilePhoto String
+    chats Chat[]
+    messages Message[]
     createdAt DateTime @default(now())
     updateAt DateTime @updatedAt 
+}
+
+model Chat {
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  image String
+  messages Message[]
+  user User @relation(fields: [createdBy], references: [id])
+  createdBy Int
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+  message String
+  chat Chat @relation(fields: [chatId], references: [id])
+  chatId Int
+  user User @relation(fields: [createdBy], references: [id])
+  createdBy Int
 }

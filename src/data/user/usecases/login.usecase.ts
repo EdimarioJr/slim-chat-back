@@ -18,7 +18,7 @@ export class LoginUseCase implements ILoginUseCase {
     if (!userExists) throw new UserDontExistsException("User dont exist");
 
     const user = await this.userRepository.find({ email });
-    console.log("usuario", user);
+
     const passwordIsCorrect = this.crypter.compare(password, user[0].password);
 
     if (!passwordIsCorrect)

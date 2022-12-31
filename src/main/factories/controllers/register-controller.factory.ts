@@ -1,4 +1,4 @@
-import { RegisterController } from "@/presentation/controllers/RegisterController";
+import { RegisterController } from "@/presentation/controllers";
 import { registerUsecaseFactory } from "../usecases";
 
 export const registerControllerFactory = () => {
