@@ -27,6 +27,8 @@ model Chat {
   messages Message[]
   user User @relation(fields: [createdBy], references: [id])
   createdBy Int
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt 
 }
 
 model Message {
@@ -36,4 +38,6 @@ model Message {
   chatId Int
   user User @relation(fields: [createdBy], references: [id])
   createdBy Int
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt 
 }

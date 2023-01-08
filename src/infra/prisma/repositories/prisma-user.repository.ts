@@ -1,17 +1,14 @@
-import { User } from "@/domains/user/entities";
-import { IUserRepository, UserFilter } from "@/domains/user/repositories";
+import { User, IUserRepository, UserFilter } from "@/domains/user";
 import { prismaConnector } from "@/main/infra/prisma/prisma-connector";
 import { DbException } from "@/shared/domain/exceptions";
-import { ICrypt } from "@/shared/domain/protocols/crypt";
+import { ICrypt } from "@/shared/domain/protocols";
 import { PrismaClient } from "@prisma/client";
 
 export class PrismaUserRepository implements IUserRepository {
   private prismaConnection: PrismaClient;
-  private encrypter: ICrypt;
 
-  constructor(encrypter: ICrypt) {
+  constructor() {
     this.prismaConnection = prismaConnector.connect();
-    this.encrypter = encrypter;
   }
 
   async getAll() {

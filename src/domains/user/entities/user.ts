@@ -1,4 +1,4 @@
-import { Chat } from "@/domains/chat/entities";
+import { Chat } from "@/domains/chat";
 import { Message } from "@/domains/message";
 import { BaseEntity } from "@/shared/domain/entities";
 
