@@ -1,14 +1,13 @@
-import { Chat } from "@/domains/chat/entities";
+import { User } from "@/domains/user";
 import { BaseEntity } from "@/shared/domain/entities";
-import { User } from "@prisma/client";
 
 export class Message extends BaseEntity {
   message: string;
-  chat: Chat;
-  createdBy?: User;
+  chatId: string;
+  createdBy: User;
 
   constructor(props: Message) {
-    super({ ...props });
+    super(props);
     Object.assign(this, props);
     Object.freeze(this);
   }

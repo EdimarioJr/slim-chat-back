@@ -1,4 +1,4 @@
-import { User } from "../entities";
+import { RefreshToken, User } from "../entities";
 
 export interface IRegisterUseCase {
   execute: (
@@ -14,6 +14,6 @@ export namespace IRegisterUseCase {
 
   export type Result = {
     accessToken: string;
-    user: User & { id: number };
+    refreshToken: string;
   };
 }

@@ -4,11 +4,11 @@ import { BaseEntity } from "@/shared/domain/entities";
 
 export class Chat extends BaseEntity {
   name: string;
-  description?: string;
-  image?: string;
+  description: string;
+  image: string;
   members: User[];
-  messages?: Message[];
-  createdBy?: User;
+  messages: Message[];
+  createdBy: User;
 
   constructor(props: Chat) {
     super({ ...props });

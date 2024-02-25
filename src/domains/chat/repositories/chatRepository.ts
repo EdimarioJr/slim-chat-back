@@ -1,15 +1,15 @@
-import { Chat } from "../entities";
+import { GetChatDTO } from "../dtos/getChat.dto";
+import { CreateChatDTO, ICreateChatUseCase, UpdateChatDTO } from "../usecases";
 
 export type ChatFilter = {
   name: string;
 };
 
 export interface IChatRepository {
-  findById: (id: number) => Promise<Chat | null>;
-  findByUser: (userId: number) => Promise<Chat[] | []>;
-  find: (query: ChatFilter) => Promise<Chat[] | []>;
-  getAll: () => Promise<Chat[]> | [];
-  delete: (id: number) => Promise<void>;
-  update: (id: number, data: Partial<Chat>) => Promise<Chat | null>;
-  create: (data: Chat) => Promise<Chat | null>;
+  findById: (id: string) => Promise<GetChatDTO>;
+  findByUser: (userId: string) => Promise<GetChatDTO[] | []>;
+  find: (query: ChatFilter) => Promise<GetChatDTO[] | []>;
+  delete: (id: string) => Promise<void>;
+  update: (id: string, data: UpdateChatDTO) => Promise<GetChatDTO>;
+  create: (data: CreateChatDTO) => Promise<ICreateChatUseCase.Result>;
 }

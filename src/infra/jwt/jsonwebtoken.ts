@@ -28,7 +28,7 @@ export class JsonWebToken implements IJwt {
 
   decode(token: string, options?: JwtDecodeOptions) {
     try {
-      return jwt.decode(token, options);
+      return jwt.decode(token, options) as Record<string, unknown>;
     } catch (err) {
       throw new JwtException("Error decoding jwt");
     }

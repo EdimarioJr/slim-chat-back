@@ -3,37 +3,54 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = "postgresql://edimario:edimario@localhost:5432/slim_chat"
+  provider = "postgres"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-    id Int @id @default(autoincrement()) 
+    id String @id @unique @default(uuid())
     name String
     email String @unique
     password String
     profilePhoto String
-    chats Chat[]
+    chats Chat[] @relation(name: "members-users")
     messages Message[]
+    refreshTokens RefreshToken[]
+    createdChats Chat[] @relation(name: "createdBy")
     createdAt DateTime @default(now())
-    updateAt DateTime @updatedAt 
+    updatedAt DateTime @updatedAt 
+}
+
+model RefreshToken {
+  id          String   @id @unique @default(uuid())
+  hashedToken String
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revoked     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Chat {
-  id Int @id @default(autoincrement())
+  id String @id @unique @default(uuid())
   name String
-  description String
+  description String 
   image String
   messages Message[]
-  user User @relation(fields: [createdBy], references: [id])
-  createdBy Int
-}
+  members User[] @relation(name: "members-users")
+  createdBy User @relation(fields: [createdById], references: [id], name: "createdBy")
+  createdById String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+} 
 
 model Message {
-  id Int @id @default(autoincrement())
+  id String @id @unique @default(uuid())
   message String
   chat Chat @relation(fields: [chatId], references: [id])
-  chatId Int
-  user User @relation(fields: [createdBy], references: [id])
-  createdBy Int
+  chatId String
+  createdBy User @relation(fields: [createdById], references: [id])
+  createdById String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
 }
