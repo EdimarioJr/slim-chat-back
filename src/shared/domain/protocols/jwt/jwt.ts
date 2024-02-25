@@ -34,6 +34,12 @@ export type JwtDecodeOptions = {
   json?: boolean;
 };
 
+export type UserPayload = {
+  userId: string;
+  email: string;
+  name: string;
+};
+
 export interface IJwt {
   secret: string;
   generate: (
@@ -41,8 +47,5 @@ export interface IJwt {
     options?: JwtGenerateOptions
   ) => string;
   verify: (token: string, options?: JwtVerifyOptions) => boolean;
-  decode: (
-    token: string,
-    options?: JwtDecodeOptions
-  ) => IJwtObject["payload"] | IJwtObject | null | string;
+  decode: (token: string, options?: JwtDecodeOptions) => IJwtObject["payload"];
 }

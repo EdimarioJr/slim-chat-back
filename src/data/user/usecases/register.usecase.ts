@@ -1,8 +1,9 @@
 import { IUserRepository } from "@/domains/user/repositories";
-import { IRegisterUseCase } from "@/domains/user/usecases";
-import { UnknownException } from "@/shared/domain/exceptions";
+import {
+  IGenerateTokensUseCase,
+  IRegisterUseCase,
+} from "@/domains/user/usecases";
 import { ICrypt } from "@/shared/domain/protocols/crypt";
-import { IJwt } from "@/shared/domain/protocols/jwt";
 import {
   CreatingUserException,
   UserAlreadyExistsException,
@@ -12,7 +13,7 @@ export class RegisterUseCase implements IRegisterUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly crypter: ICrypt,
-    private readonly jwt: IJwt
+    private readonly generateTokens: IGenerateTokensUseCase
   ) {}
 
   async execute({
@@ -27,6 +28,7 @@ export class RegisterUseCase implements IRegisterUseCase {
 
     try {
       const cryptedPassword = this.crypter.encrypt(password);
+
       const newUser = await this.userRepository.create({
         name,
         email,
@@ -35,12 +37,13 @@ export class RegisterUseCase implements IRegisterUseCase {
       });
       if (!newUser) throw new CreatingUserException("Error creating user!");
 
-      const accessToken = this.jwt.generate({
+      const { accessToken, refreshToken } = await this.generateTokens.execute({
         name: newUser.name,
         email: newUser?.email,
-        id: newUser.id,
+        userId: newUser.id,
       });
-      return { accessToken, user: newUser };
+
+      return { accessToken, refreshToken };
     } catch (err) {
       throw err;
     }

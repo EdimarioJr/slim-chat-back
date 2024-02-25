@@ -1,21 +1,21 @@
 import { IUserRepository } from "@/domains/user/repositories";
-import { ILoginUseCase } from "@/domains/user/usecases";
+import { IGenerateTokensUseCase, ILoginUseCase } from "@/domains/user/usecases";
 import { ICrypt } from "@/shared/domain/protocols/crypt";
-import { IJwt } from "@/shared/domain/protocols/jwt";
 import { UserDontExistsException } from "../exceptions";
 import { IncorrectPasswordException } from "../exceptions/incorrectPassword.error";
 
 export class LoginUseCase implements ILoginUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
-    private readonly jwt: IJwt,
-    private readonly crypter: ICrypt
+    private readonly crypter: ICrypt,
+    private readonly generateTokens: IGenerateTokensUseCase
   ) {}
 
   async execute(params: ILoginUseCase.Params): Promise<ILoginUseCase.Result> {
     const { email, password } = params;
+
     const userExists = await this.userRepository.checkUserByEmail(email);
-    if (!userExists) throw new UserDontExistsException("User dont exist");
+    if (!userExists) throw new UserDontExistsException("User don't exist");
 
     const user = await this.userRepository.find({ email });
 
@@ -25,8 +25,13 @@ export class LoginUseCase implements ILoginUseCase {
       throw new IncorrectPasswordException("Incorrect Password");
 
     try {
-      const accessToken = this.jwt.generate({ id: user[0].id });
-      return { accessToken };
+      const { id, email, name } = user[0];
+      const { accessToken, refreshToken } = await this.generateTokens.execute({
+        userId: id,
+        email,
+        name,
+      });
+      return { accessToken, refreshToken };
     } catch (err) {
       throw err;
     }

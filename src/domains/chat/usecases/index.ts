@@ -1,3 +1,4 @@
-export * from "./create-chat.usecase";
-export * from "./delete-chat.usecase";
-export * from "./update-chat.usecase";
+export * from "./createChat.usecase.";
+export * from "./deleteChat.usecase";
+export * from "./updateChat.usecase";
+export * from "./getChatsByUser.usecase";
